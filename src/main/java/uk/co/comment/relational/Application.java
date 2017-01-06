@@ -1,6 +1,7 @@
 package uk.co.comment.relational;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
+import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -46,6 +47,22 @@ public class Application {
             dataSource.setInitialSize(10);
             dataSource.setMaxActive(20);
             return dataSource;
+        }
+        
+        @Bean
+        public Flyway flyway(DataSource dataSource) {
+            Flyway flyway = new Flyway();
+            flyway.setDataSource(dataSource);
+            
+            String activeProfile = environment.getActiveProfiles()[0];
+            flyway.setLocations("classpath:database/common", "classpath:database/" + activeProfile);
+            
+            if (activeProfile.equals("test")) {
+                flyway.clean();
+            }
+            
+            flyway.migrate();
+            return flyway;
         }
         
     }

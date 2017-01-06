@@ -1,15 +1,15 @@
 package uk.co.comment.relational.service;
 
-import org.junit.Ignore;
-import org.springframework.test.context.ActiveProfiles;
-import uk.co.comment.relational.domain.Comment;
 import org.joda.time.DateTime;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.co.comment.relational.domain.Comment;
 import uk.co.comment.relational.rest.CommentDTO;
 
 @ActiveProfiles("test")
@@ -22,11 +22,11 @@ public class CommentServiceTest {
     
     @Test
     public void shouldPersistComment() {
-        DateTime baseline = DateTime.now();
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setComment("My first comment");
         commentDTO.setName("Alastair Knowles");
         
+        DateTime baseline = DateTime.now().withMillisOfSecond(0);
         Long commentId = commentService.createComment(commentDTO);
         Assert.assertEquals(new Long(1), commentId);
         
