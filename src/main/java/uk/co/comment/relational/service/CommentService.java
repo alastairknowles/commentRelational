@@ -19,10 +19,6 @@ public class CommentService {
         return commentRepository.findOne(id);
     }
     
-    public Iterable<Comment> getComments() {
-        return commentRepository.findAll();
-    }
-    
     public Long createComment(CommentDTO commentDTO) {
         Comment comment = new Comment();
         comment.setComment(commentDTO.getComment());

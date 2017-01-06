@@ -2,12 +2,16 @@ package uk.co.comment.relational.rest;
 
 import org.joda.time.DateTime;
 
+import javax.validation.constraints.NotNull;
+
 public class CommentDTO {
     
     private Long id;
     
+    @NotNull
     private String comment;
     
+    @NotNull
     private String name;
     
     private DateTime posted;
