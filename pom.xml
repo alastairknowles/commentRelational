@@ -82,7 +82,8 @@
                         </goals>
                         <configuration>
                             <files>
-                                <file>src/main/resources/environment.properties</file>
+                                <file>src/main/resources/application.properties</file>
+                                <file>src/main/resources/application.${profile.id}.properties</file>
                             </files>
                         </configuration>
                     </execution>

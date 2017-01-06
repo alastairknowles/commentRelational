@@ -1,6 +1,8 @@
-package service;
+package uk.co.comment.relational.service;
 
-import domain.Comment;
+import org.junit.Ignore;
+import org.springframework.test.context.ActiveProfiles;
+import uk.co.comment.relational.domain.Comment;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,8 +10,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import rest.CommentDTO;
+import uk.co.comment.relational.rest.CommentDTO;
 
+@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CommentServiceTest {
@@ -36,11 +39,13 @@ public class CommentServiceTest {
     }
     
     @Test
+    @Ignore
     public void shouldNotPersistCommentWithMissingComment() {
         
     }
     
     @Test
+    @Ignore
     public void shouldNotPersistCommentWithMissingName() {
         
     }

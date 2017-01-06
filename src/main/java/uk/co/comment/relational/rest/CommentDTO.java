@@ -1,4 +1,4 @@
-package rest;
+package uk.co.comment.relational.rest;
 
 import org.joda.time.DateTime;
 

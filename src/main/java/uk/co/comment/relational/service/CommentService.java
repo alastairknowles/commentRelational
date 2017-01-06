@@ -1,12 +1,12 @@
-package service;
+package uk.co.comment.relational.service;
 
-import domain.Comment;
+import uk.co.comment.relational.domain.Comment;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import repository.CommentRepository;
-import rest.CommentDTO;
+import uk.co.comment.relational.repository.CommentRepository;
+import uk.co.comment.relational.rest.CommentDTO;
 
 @Service
 @Transactional

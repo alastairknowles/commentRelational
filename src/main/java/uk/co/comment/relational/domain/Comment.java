@@ -1,4 +1,4 @@
-package domain;
+package uk.co.comment.relational.domain;
 
 import org.joda.time.DateTime;
 
