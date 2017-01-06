@@ -1,7 +1,6 @@
 package uk.co.comment.relational.domain;
 
 import org.joda.time.DateTime;
-import uk.co.comment.relational.domain.converter.DateTimeConverter;
 
 import javax.persistence.*;
 
@@ -21,7 +20,6 @@ public class Comment {
     private String name;
     
     @Column(name = "posted", nullable = false)
-    @Convert(converter = DateTimeConverter.class)
     private DateTime posted;
     
     public Long getId() {

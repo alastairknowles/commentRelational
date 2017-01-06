@@ -2,11 +2,11 @@ package uk.co.comment.relational.service;
 
 import org.joda.time.DateTime;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.comment.relational.domain.Comment;
@@ -28,7 +28,6 @@ public class CommentServiceTest {
         
         DateTime baseline = DateTime.now().withMillisOfSecond(0);
         Long commentId = commentService.createComment(commentDTO);
-        Assert.assertEquals(new Long(1), commentId);
         
         Comment comment = commentService.getComment(commentId);
         Assert.assertEquals(commentDTO.getComment(), comment.getComment());
@@ -39,15 +38,33 @@ public class CommentServiceTest {
     }
     
     @Test
-    @Ignore
     public void shouldNotPersistCommentWithMissingComment() {
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setName("Diane Lillis");
         
+        Exception exception = null;
+        try {
+            commentService.createComment(commentDTO);
+        } catch (Exception e) {
+            exception = e;
+        }
+        
+        Assert.assertEquals(DataIntegrityViolationException.class, exception.getClass());
     }
     
     @Test
-    @Ignore
     public void shouldNotPersistCommentWithMissingName() {
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setComment("My second comment");
         
+        Exception exception = null;
+        try {
+            commentService.createComment(commentDTO);
+        } catch (Exception e) {
+            exception = e;
+        }
+        
+        Assert.assertEquals(DataIntegrityViolationException.class, exception.getClass());
     }
     
 }
