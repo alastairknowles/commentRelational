@@ -1,5 +1,7 @@
 package uk.co.comment.relational;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,7 @@ public class Application {
     }
     
     @Configuration
-    public static class ConfigurationData {
+    public static class ConfigurationCommon {
         
         @Autowired
         private Environment environment;
@@ -63,6 +65,12 @@ public class Application {
             
             flyway.migrate();
             return flyway;
+        }
+        
+        @Bean
+        public ObjectMapper objectMapper() {
+            return new ObjectMapper()
+                    .registerModule(new JodaModule());
         }
         
     }

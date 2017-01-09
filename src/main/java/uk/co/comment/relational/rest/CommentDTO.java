@@ -48,4 +48,24 @@ public class CommentDTO {
         this.posted = posted;
     }
     
+    public CommentDTO id(Long id) {
+        this.id = id;
+        return this;
+    }
+    
+    public CommentDTO comment(String comment) {
+        this.comment = comment;
+        return this;
+    }
+    
+    public CommentDTO name(String name) {
+        this.name = name;
+        return this;
+    }
+    
+    public CommentDTO posted(DateTime posted) {
+        this.posted = posted;
+        return this;
+    }
+    
 }
