@@ -21,8 +21,11 @@ public class CommentDTO {
     public CommentDTO() {
     }
     
-    public CommentDTO(Long id, Long likes) {
+    public CommentDTO(Long id, String comment, String name, DateTime posted, Long likes) {
         this.id = id;
+        this.comment = comment;
+        this.name = name;
+        this.posted = posted;
         this.likes = likes;
     }
     

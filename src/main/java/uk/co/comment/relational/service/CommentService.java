@@ -10,9 +10,6 @@ import uk.co.comment.relational.repository.CommentRepository;
 import uk.co.comment.relational.rest.CommentDTO;
 import uk.co.comment.relational.rest.CommentsDTO;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-
 @Service
 @Transactional
 public class CommentService {
@@ -40,10 +37,7 @@ public class CommentService {
     }
     
     public CommentsDTO getComments() {
-        Map<Long, Long> commentLikes = commentRepository.findCommentLikeCounts().stream().collect(Collectors.toMap(CommentDTO::getId, CommentDTO::getLikes));
-        return new CommentsDTO(commentRepository.findAllByOrderByIdDesc().stream().map(comment ->
-                new CommentDTO().id(comment.getId()).comment(comment.getComment()).name(comment.getName()).posted(comment.getPosted()).likes(commentLikes.get(comment.getId())))
-                .collect(Collectors.toList()));
+        return new CommentsDTO(commentRepository.findAllWithLikeCountsOrderByIdDesc());
     }
     
     public Long likeComment(Long id) {

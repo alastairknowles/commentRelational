@@ -11,9 +11,12 @@ import java.util.List;
 @Transactional
 public interface CommentRepository extends CrudRepository<Comment, Long> {
     
-    List<Comment> findAllByOrderByIdDesc();
-    
-    @Query(value = "select new uk.co.comment.relational.rest.CommentDTO(cl.comment.id, count(cl.id)) from CommentLike cl group by cl.comment.id")
-    List<CommentDTO> findCommentLikeCounts();
+    @Query(value = "select new uk.co.comment.relational.rest.CommentDTO(c.id, c.comment, c.name, c.posted, count(cl.id)) " +
+            "from Comment c " +
+            "left join c.likes cl " +
+            "group by c.id order " +
+            "by c.id desc")
+    List<CommentDTO> findAllWithLikeCountsOrderByIdDesc();
     
 }
+
