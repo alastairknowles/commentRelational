@@ -16,6 +16,16 @@ public class CommentDTO {
     
     private DateTime posted;
     
+    public Long likes;
+    
+    public CommentDTO() {
+    }
+    
+    public CommentDTO(Long id, Long likes) {
+        this.id = id;
+        this.likes = likes;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -48,6 +58,14 @@ public class CommentDTO {
         this.posted = posted;
     }
     
+    public Long getLikes() {
+        return likes;
+    }
+    
+    public void setLikes(Long likes) {
+        this.likes = likes;
+    }
+    
     public CommentDTO id(Long id) {
         this.id = id;
         return this;
@@ -65,6 +83,11 @@ public class CommentDTO {
     
     public CommentDTO posted(DateTime posted) {
         this.posted = posted;
+        return this;
+    }
+    
+    public CommentDTO likes(Long likes) {
+        this.likes = likes;
         return this;
     }
     

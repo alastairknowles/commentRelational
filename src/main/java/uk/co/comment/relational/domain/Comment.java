@@ -1,16 +1,14 @@
 package uk.co.comment.relational.domain;
 
+import org.assertj.core.util.Sets;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "comment")
-public class Comment {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Comment extends DatabaseEntity {
     
     @Lob
     @Column(name = "comment", nullable = false)
@@ -22,13 +20,8 @@ public class Comment {
     @Column(name = "posted", nullable = false)
     private DateTime posted;
     
-    public Long getId() {
-        return id;
-    }
-    
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @OneToMany(mappedBy = "comment")
+    private Set<CommentLike> likes = Sets.newHashSet();
     
     public String getComment() {
         return comment;
@@ -52,6 +45,14 @@ public class Comment {
     
     public void setPosted(DateTime posted) {
         this.posted = posted;
+    }
+    
+    public Set<CommentLike> getLikes() {
+        return likes;
+    }
+    
+    public void setLikes(Set<CommentLike> likes) {
+        this.likes = likes;
     }
     
 }

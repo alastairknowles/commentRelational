@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import uk.co.comment.relational.domain.Comment;
 import uk.co.comment.relational.rest.CommentDTO;
 
@@ -37,34 +38,31 @@ public class CommentServiceTest {
         Assert.assertTrue(posted.equals(baseline) || posted.isAfter(baseline));
     }
     
-    @Test
+    @Test(expected = DataIntegrityViolationException.class)
     public void shouldNotPersistCommentWithMissingComment() {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setName("Diane Lillis");
-        
-        Exception exception = null;
-        try {
-            commentService.createComment(commentDTO);
-        } catch (Exception e) {
-            exception = e;
-        }
-        
-        Assert.assertEquals(DataIntegrityViolationException.class, exception.getClass());
+        commentService.createComment(commentDTO);
     }
     
-    @Test
+    @Test(expected = DataIntegrityViolationException.class)
     public void shouldNotPersistCommentWithMissingName() {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setComment("My second comment");
+        commentService.createComment(commentDTO);
+    }
+    
+    @Test
+    @Transactional
+    public void shouldLikeComment() {
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setComment("My second comment");
+        commentDTO.setName("Alastair Knowles");
+        Long id = commentService.createComment(commentDTO);
         
-        Exception exception = null;
-        try {
-            commentService.createComment(commentDTO);
-        } catch (Exception e) {
-            exception = e;
-        }
-        
-        Assert.assertEquals(DataIntegrityViolationException.class, exception.getClass());
+        commentService.likeComment(id);
+        Comment comment = commentService.getComment(id);
+        Assert.assertEquals(1, comment.getLikes().size());
     }
     
 }

@@ -20,14 +20,20 @@ public class Controller {
     
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "/comments", method = RequestMethod.POST)
-    public void createComment(@RequestBody @Valid CommentDTO commentDTO) {
-        commentService.createComment(commentDTO);
+    public Long createComment(@RequestBody @Valid CommentDTO commentDTO) {
+        return commentService.createComment(commentDTO);
     }
     
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(path = "/comments", method = RequestMethod.GET)
     public CommentsDTO retrieveComments() {
         return commentService.getComments();
+    }
+    
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(path = "/comments/{id}/like", method = RequestMethod.POST)
+    public Long likeComment(@PathVariable Long id) {
+        return commentService.likeComment(id);
     }
     
 }
