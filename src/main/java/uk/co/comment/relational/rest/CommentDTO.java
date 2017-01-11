@@ -69,29 +69,4 @@ public class CommentDTO {
         this.likes = likes;
     }
     
-    public CommentDTO id(Long id) {
-        this.id = id;
-        return this;
-    }
-    
-    public CommentDTO comment(String comment) {
-        this.comment = comment;
-        return this;
-    }
-    
-    public CommentDTO name(String name) {
-        this.name = name;
-        return this;
-    }
-    
-    public CommentDTO posted(DateTime posted) {
-        this.posted = posted;
-        return this;
-    }
-    
-    public CommentDTO likes(Long likes) {
-        this.likes = likes;
-        return this;
-    }
-    
 }

@@ -62,7 +62,7 @@ public class Application {
                 LOGGER.info("Preparing database schema: " + schema);
                 PreparedStatement createSchema = connection.prepareStatement("create schema if not exists " + schema);
                 createSchema.execute();
-    
+                
                 LOGGER.info("Preparing database user: " + username);
                 PreparedStatement createUser = connection.prepareStatement("grant all on " + schema + ".* to '" + username + "'@'%' identified by '" + password + "'");
                 createUser.execute();

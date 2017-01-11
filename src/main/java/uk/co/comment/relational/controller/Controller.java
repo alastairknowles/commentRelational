@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import uk.co.comment.relational.rest.CommentDTO;
 import uk.co.comment.relational.rest.CommentsDTO;
+import uk.co.comment.relational.rest.EntityDTO;
 import uk.co.comment.relational.service.CommentService;
 
 import javax.validation.Valid;
@@ -20,7 +21,7 @@ public class Controller {
     
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "/comments", method = RequestMethod.POST)
-    public Long createComment(@RequestBody @Valid CommentDTO commentDTO) {
+    public EntityDTO createComment(@RequestBody @Valid CommentDTO commentDTO) {
         return commentService.createComment(commentDTO);
     }
     
@@ -32,7 +33,7 @@ public class Controller {
     
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "/comments/{id}/like", method = RequestMethod.POST)
-    public Long likeComment(@PathVariable Long id) {
+    public EntityDTO likeComment(@PathVariable Long id) {
         return commentService.likeComment(id);
     }
     

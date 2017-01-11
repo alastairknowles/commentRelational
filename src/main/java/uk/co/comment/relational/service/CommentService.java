@@ -9,6 +9,7 @@ import uk.co.comment.relational.repository.CommentLikeRepository;
 import uk.co.comment.relational.repository.CommentRepository;
 import uk.co.comment.relational.rest.CommentDTO;
 import uk.co.comment.relational.rest.CommentsDTO;
+import uk.co.comment.relational.rest.EntityDTO;
 
 @Service
 @Transactional
@@ -27,26 +28,26 @@ public class CommentService {
         return commentRepository.findOne(id);
     }
     
-    public Long createComment(CommentDTO commentDTO) {
+    public EntityDTO createComment(CommentDTO commentDTO) {
         Comment comment = new Comment();
         comment.setComment(commentDTO.getComment());
         comment.setName(commentDTO.getName());
         comment.setPosted(DateTime.now());
         comment = commentRepository.save(comment);
-        return comment.getId();
+        return new EntityDTO().id(comment.getId());
     }
     
     public CommentsDTO getComments() {
         return new CommentsDTO(commentRepository.findAllWithLikeCountsOrderByIdDesc());
     }
     
-    public Long likeComment(Long id) {
+    public EntityDTO likeComment(Long id) {
         Comment comment = getComment(id);
         CommentLike like = new CommentLike();
         like.setComment(comment);
         like = commentLikeRepository.save(like);
         comment.getLikes().add(like);
-        return like.getId();
+        return new EntityDTO().id(like.getId());
     }
     
 }

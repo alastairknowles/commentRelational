@@ -29,7 +29,7 @@ public class CommentServiceTest {
         commentDTO.setName("Alastair Knowles");
         
         DateTime baseline = DateTime.now().withMillisOfSecond(0);
-        Long commentId = commentService.createComment(commentDTO);
+        Long commentId = commentService.createComment(commentDTO).getId();
         
         Comment comment = commentService.getComment(commentId);
         Assert.assertEquals(commentDTO.getComment(), comment.getComment());
@@ -59,7 +59,7 @@ public class CommentServiceTest {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setComment("My second comment");
         commentDTO.setName("Alastair Knowles");
-        Long id = commentService.createComment(commentDTO);
+        Long id = commentService.createComment(commentDTO).getId();
         
         commentService.likeComment(id);
         Comment comment = commentService.getComment(id);

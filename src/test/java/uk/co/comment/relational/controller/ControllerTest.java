@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import uk.co.comment.relational.Application;
 import uk.co.comment.relational.rest.CommentDTO;
 import uk.co.comment.relational.rest.CommentsDTO;
+import uk.co.comment.relational.rest.EntityDTO;
 
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -109,14 +110,14 @@ public class ControllerTest {
             return null;
         }
         
-        return objectMapper.readValue(resultActions.andReturn().getResponse().getContentAsString(), Long.class);
+        return objectMapper.readValue(resultActions.andReturn().getResponse().getContentAsString(), EntityDTO.class).getId();
     }
     
     private Long verifyLikeComment(Long id) throws Exception {
         return objectMapper.readValue(mockMvc.perform(MockMvcRequestBuilders.post("/api/comments/" + id + "/like")
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andReturn().getResponse().getContentAsString(), Long.class);
+                .andReturn().getResponse().getContentAsString(), EntityDTO.class).getId();
     }
     
 }
