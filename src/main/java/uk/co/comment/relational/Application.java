@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.flywaydb.core.Flyway;
+import org.joda.time.DateTimeZone;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +22,8 @@ import java.sql.SQLException;
 
 @SpringBootApplication(scanBasePackages = "uk.co.comment.relational")
 public class Application {
+    
+    public static Logger LOGGER = LoggerFactory.getLogger(Application.class);
     
     public static void main(String args[]) {
         SpringApplication.run(Application.class, args);
@@ -43,6 +48,7 @@ public class Application {
         
         public ConfigurationCommon(Environment environment) {
             this.environment = environment;
+            DateTimeZone.setDefault(DateTimeZone.UTC);
         }
         
         @Bean
@@ -54,12 +60,14 @@ public class Application {
             
             try (Connection connection = DriverManager.getConnection(host, "root", "root")) {
                 PreparedStatement createSchema = connection.prepareStatement("create schema if not exists " + schema);
+                LOGGER.info("Preparing database schema: " + schema);
                 createSchema.execute();
                 
                 PreparedStatement createUser = connection.prepareStatement("grant all on " + schema + ".* to '" + username + "'@'%' identified by '" + password + "'");
                 createUser.execute();
+                LOGGER.info("Preparing database user: " + username);
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.info("Failed to prepare database schema and user - check Java has root permissions", e);
             }
             
             DataSource dataSource = new DataSource();
