@@ -6,4 +6,5 @@ import uk.co.comment.relational.domain.CommentLike;
 
 @Transactional
 public interface CommentLikeRepository extends CrudRepository<CommentLike, Long> {
+    
 }

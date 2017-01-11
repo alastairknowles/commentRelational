@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.flywaydb.core.Flyway;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +11,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 @SpringBootApplication(scanBasePackages = "uk.co.comment.relational")
 public class Application {
@@ -35,17 +39,34 @@ public class Application {
     @Configuration
     public static class ConfigurationCommon {
         
-        @Autowired
         private Environment environment;
+        
+        public ConfigurationCommon(Environment environment) {
+            this.environment = environment;
+        }
         
         @Bean
         public DataSource dataSource() {
+            String host = "jdbc:mysql://localhost";
+            String schema = environment.getProperty("database.schema");
+            String username = environment.getProperty("database.user");
+            String password = environment.getProperty("database.password");
+            
+            try (Connection connection = DriverManager.getConnection(host, "root", "root")) {
+                PreparedStatement createSchema = connection.prepareStatement("create schema if not exists " + schema);
+                createSchema.execute();
+                
+                PreparedStatement createUser = connection.prepareStatement("grant all on " + schema + ".* to '" + username + "'@'%' identified by '" + password + "'");
+                createUser.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            
             DataSource dataSource = new DataSource();
             dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-            dataSource.setUrl("jdbc:mysql://localhost/" + environment.getProperty("database.schema")
-                    + "?useUnicode=yes&characterEncoding=UTF-8&connectionCollation=utf8_general_ci&useLegacyDatetimeCode=false&serverTimezone=UTC");
-            dataSource.setUsername(environment.getProperty("database.user"));
-            dataSource.setPassword(environment.getProperty("database.password"));
+            dataSource.setUrl(host + "/" + schema + "?useUnicode=yes&characterEncoding=UTF-8&connectionCollation=utf8_general_ci&useLegacyDatetimeCode=false&serverTimezone=UTC");
+            dataSource.setUsername(username);
+            dataSource.setPassword(password);
             dataSource.setInitialSize(10);
             dataSource.setMaxActive(20);
             return dataSource;
