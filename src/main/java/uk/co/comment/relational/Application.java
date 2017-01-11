@@ -23,7 +23,7 @@ import java.sql.SQLException;
 @SpringBootApplication(scanBasePackages = "uk.co.comment.relational")
 public class Application {
     
-    public static Logger LOGGER = LoggerFactory.getLogger(Application.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(Application.class);
     
     public static void main(String args[]) {
         SpringApplication.run(Application.class, args);
@@ -59,13 +59,13 @@ public class Application {
             String password = environment.getProperty("database.password");
             
             try (Connection connection = DriverManager.getConnection(host, "root", "root")) {
-                PreparedStatement createSchema = connection.prepareStatement("create schema if not exists " + schema);
                 LOGGER.info("Preparing database schema: " + schema);
+                PreparedStatement createSchema = connection.prepareStatement("create schema if not exists " + schema);
                 createSchema.execute();
-                
+    
+                LOGGER.info("Preparing database user: " + username);
                 PreparedStatement createUser = connection.prepareStatement("grant all on " + schema + ".* to '" + username + "'@'%' identified by '" + password + "'");
                 createUser.execute();
-                LOGGER.info("Preparing database user: " + username);
             } catch (SQLException e) {
                 LOGGER.info("Failed to prepare database schema and user - check Java has root permissions", e);
             }
